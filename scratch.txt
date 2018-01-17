@@ -1,0 +1,9 @@
+# First check the files available in the "tables" folder
+# tableFolder = "../tables/"
+# save the list of files in the
+# filesInTables = os.listdir(tableFolder)
+
+# print(filesInTables)
+
+# for name in filesInTables:
+#     print(name)
