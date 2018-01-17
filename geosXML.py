@@ -88,11 +88,54 @@ def main():
     # Take the values of "E_*", "nu_*", "KIC_*" and "Shmin_*"
     # tagsToChange = ['KICTable','ETable', 'nuTable', 'ShTable', 'SHTable','SvTable']
     # print(tagsToChange)
-    tagsToChange = [['ETable', 'nuTable'],
-                    ['KICTable'],
-                    # ['KICTable', 'ETable', 'nuTable'] #,
-                    # ['ShTable', 'SHTable', 'SvTable']
-                    ]
+    tagsToChange = ['ETable', 'nuTable', 'Shmin']
+
+
+    layerThick = [  # mostly the thickness of the layers
+        0.5,  # mudstone layer
+        0.02,  # beef layer
+        #0.1,  # ash layer
+        #0.02  # beef layer
+    ]
+    numLayers = len(layerThick)
+
+    mechProp = [ # set of mechanical properties
+        [  [30e9], [0.1,0.25], [3e6,1e6] ], # [ [ E1 ] , [ nu1 ], [ SH1] ]
+        [  [10e9,20e9], [0.1] , [3e6]  ]  # [ [ E2 ], [ nu2 ], [ SH2  ] ]
+    ]
+
+    numProps = len(tagsToChange)
+
+    # here check dimensions of the various matrices
+    if(len(mechProp) != numLayers):
+        sys.exit('Number of mechanical properties is different '
+                 'from the number of layers')
+    for idx, propSet in enumerate(mechProp):
+        if (len(propSet) != numProps):
+            sys.exit('Mechanical properties does not match at line ', idx)
+
+    # first permutation (properties of 1 layer)
+    perm1 = [] #[None] * (numLayers-1)
+    for i in range(0,numLayers):
+        temp = [list(a) for a in itertools.product(*mechProp[i])]
+        perm1.append(temp)
+
+    print('\n perm1 ')
+    print(perm1)
+    print('\n\n\n')
+
+    # second permutation (a layer with another)
+    perm2 = [list(a) for a in itertools.product(*perm1)]
+
+    print('\n perm2 ')
+    print(perm2)
+
+    print('===== Analyses to be run =====')
+    print('{:1.4f}'.format(perm2[0][0][0]))
+
+
+    sys.exit(0)
+
     # print(tagsToChange1)
     # print(tagsToChange1[2])
     # print(tagsToChange1[3][1])
